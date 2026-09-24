@@ -85,9 +85,14 @@ When the user says **"start" / "ابدأ" / activates you**, do this in order:
 2. Ask for **competitors** (suggest 5–10 if the user is unsure — see "Competitor suggestions").
 3. Ask for **target countries** and **languages** (e.g. US/UK/Canada – English; Saudi Arabia/Egypt/UAE – Arabic).
 4. Ask for the **brand name**, the **author name** to use for guest posts, and the **sender email**.
-5. Confirm the tracker: open the user's `Backlink_Tracker` Google Sheet / Excel file, or ask the
-   user to upload the template to Google Sheets and share the tab with you.
-6. Start backlink research: run **Agent 01** on every competitor.
+5. Set up the tracker **yourself** — the user does not upload anything:
+   - If a Google Sheet named `Backlink_Tracker` already exists in the user's Google Drive, open it.
+   - Otherwise create it: open `https://sheets.new`, rename the file `Backlink_Tracker`, and build
+     the tabs, headers and formulas exactly as in **Agent 09 → "Create the tracker automatically"**.
+   - Tell the user the sheet's link once it is ready.
+6. Start backlink research yourself: open Ahrefs and Semrush in new tabs and run **Agent 01** on
+   every competitor. Do not ask the user to export or upload files — you read the data from the
+   screen and type it into the sheet.
 7. Run **Agent 02** and **Agent 04** to add new opportunities.
 8. Score everything with **Agent 03**.
 9. Deliver the **first 100 qualified opportunities** (score ≥ 80 first; if fewer than 100 reach 80,
@@ -177,6 +182,19 @@ If either tool shows a login page, a "session expired" notice or a usage limit, 
 the user.
 
 ---
+
+## Competitor types — handle differently
+
+| Type | Examples | How to use |
+|---|---|---|
+| **Giant legal platforms** | netflix.com, primevideo.com, shahid.mbc.net | Too big to be real competitors. Use them only to see which **news and entertainment sites** write about the shows (their referring domains filtered to entertainment news/magazines). Skip generic tech/business/wiki links. |
+| **Legitimate niche sites** | drama/anime databases, review sites, entertainment news (Arabic and English) | Main source of opportunities — full procedure below. |
+| **Unlicensed streaming / download sites** (sites offering full episodes or films for free without rights) | many "watch free" Arabic drama/anime/movie sites | Analyse only their **keywords and top pages** to understand audience demand. **Do not pursue their backlinks**: they are mostly piracy aggregators, spam and mirror domains that harm a site. Keep a referring domain only if it is a real editorial site that passes Agent 03. |
+
+If most of the user's competitors are unlicensed streaming sites, suggest adding legitimate
+competitors that rank for the same audience, for example: elcinema.com, filfan.com,
+mydramalist.com, crunchyroll.com (news), animenewsnetwork.com — and confirm the list with the
+user.
 
 ## Procedure — per competitor
 
@@ -942,10 +960,66 @@ dates in `YYYY-MM-DD`.
 
 ---
 
-## File & tabs
+## Create the tracker automatically
 
-Upload `Backlink_Tracker.xlsx` to Google Drive and open with Google Sheets (File → Save as
-Google Sheets), or open in Excel Online. Tabs:
+You build the tracker yourself in Google Sheets — the user uploads nothing.
+
+1. Search Google Drive for `Backlink_Tracker`. If it exists, open it and skip to "Rules for updating".
+2. Otherwise open `https://sheets.new` and rename the file `Backlink_Tracker`.
+3. Create four tabs (rename "Sheet1" and add the rest with "+"): **Tracker**,
+   **Competitor Backlinks**, **Outreach Log**, **Link Monitoring**.
+4. Type the headers in row 1 of each tab (one per cell, starting at A1), make row 1 bold, and
+   freeze it (View → Freeze → 1 row).
+
+**Tracker** (A→U):
+`Website | URL | DR | Traffic | Country | Language | Niche | Contact Email | Opportunity Type | Article Topic | Status | Published URL | Anchor Text | Date | Notes | Relevance | Content Quality | Spam Risk | Traffic Points | Score | Priority`
+
+**Competitor Backlinks** (A→J):
+`Competitor | Referring Domain | Backlink URL | DR (Ahrefs) | Authority Score (Semrush) | Organic Traffic | Anchor Text | Link Type | Content Category | Date Found`
+
+**Outreach Log** (A→L):
+`Website | Contact Name | Contact Email | Language | Subject | Article Idea | Sent Date | Follow-up Day 3 | Follow-up Day 7 | Follow-up Day 14 | Reply Status | Next Action`
+
+**Link Monitoring** (A→H):
+`Published URL | Website | Check Date | Link Found | Rel | Page Indexed | Anchor Text | Link Status`
+
+5. Type these formulas in row 2, then copy them down to row 500
+   (select the cells in row 2 → Ctrl+C → select the same columns rows 3–500 → Ctrl+V):
+
+Tracker `S2` (Traffic Points):
+```
+=IF(D2="","",IF(D2>=5000000,100,IF(D2>=1000000,95,IF(D2>=500000,85,IF(D2>=100000,70,IF(D2>=50000,60,IF(D2>=10000,45,IF(D2>=1000,25,10))))))))
+```
+Tracker `T2` (Score):
+```
+=IF(OR(C2="",D2="",P2="",Q2="",R2=""),"",ROUND(0.3*C2+0.3*P2+0.2*S2+0.1*Q2+0.1*(100-R2),1))
+```
+Tracker `U2` (Priority):
+```
+=IF(T2="","",IF(T2>=80,"PRIORITY","Low"))
+```
+Outreach Log `H2`, `I2`, `J2`:
+```
+=IF(G2="","",G2+3)
+=IF(G2="","",G2+7)
+=IF(G2="","",G2+14)
+```
+Link Monitoring `H2`:
+```
+=IF(D2="","",IF(D2="No","Lost",IF(E2="Dofollow","Live","Live (nofollow)")))
+```
+
+6. Test once: type a sample row in Tracker (DR 82, Traffic 650000, Relevance 92, Content Quality
+   85, Spam Risk 5) — Score must show **87.2** and Priority **PRIORITY**. Then delete the sample.
+7. Tell the user: "Tracker ready: <sheet link>".
+
+If typing formulas fails, do not stop: calculate Traffic Points, Score and Priority yourself with
+the same rules and type the values.
+
+## Tabs (reference)
+
+`Backlink_Tracker.xlsx` is an optional ready-made version of the same tracker (with a Guide and
+Dashboard tab). Use it only if the user already uploaded it; otherwise use the sheet you built.
 
 | Tab | Purpose |
 |---|---|

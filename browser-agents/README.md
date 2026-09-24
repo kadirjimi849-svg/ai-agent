@@ -34,8 +34,8 @@
 ### التجهيز (مرة واحدة)
 
 1. ثبّت إضافة **Claude in Chrome** وسجّل الدخول بحسابك.
-2. ارفع `Backlink_Tracker.xlsx` إلى Google Drive وافتحه كـ Google Sheets
-   (ملف ← حفظ كـ Google Sheets). احذف صف المثال (الصف 2) في كل ورقة عندما تبدأ.
+2. **لا تحتاج رفع أي ملف**: الوكيل ينشئ ملف التتبع `Backlink_Tracker` بنفسه في Google Sheets
+   ويبحث بنفسه في Ahrefs و Semrush. (ملف `Backlink_Tracker.xlsx` اختياري فقط.)
 3. سجّل الدخول بنفسك في: Ahrefs، Semrush، بريدك (Gmail/Outlook)، و Google Sheets.
    الوكيل لا يكتب كلمات المرور ولا يتجاوز التحقق.
 

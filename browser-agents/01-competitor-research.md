@@ -30,6 +30,19 @@ the user.
 
 ---
 
+## Competitor types — handle differently
+
+| Type | Examples | How to use |
+|---|---|---|
+| **Giant legal platforms** | netflix.com, primevideo.com, shahid.mbc.net | Too big to be real competitors. Use them only to see which **news and entertainment sites** write about the shows (their referring domains filtered to entertainment news/magazines). Skip generic tech/business/wiki links. |
+| **Legitimate niche sites** | drama/anime databases, review sites, entertainment news (Arabic and English) | Main source of opportunities — full procedure below. |
+| **Unlicensed streaming / download sites** (sites offering full episodes or films for free without rights) | many "watch free" Arabic drama/anime/movie sites | Analyse only their **keywords and top pages** to understand audience demand. **Do not pursue their backlinks**: they are mostly piracy aggregators, spam and mirror domains that harm a site. Keep a referring domain only if it is a real editorial site that passes Agent 03. |
+
+If most of the user's competitors are unlicensed streaming sites, suggest adding legitimate
+competitors that rank for the same audience, for example: elcinema.com, filfan.com,
+mydramalist.com, crunchyroll.com (news), animenewsnetwork.com — and confirm the list with the
+user.
+
 ## Procedure — per competitor
 
 ### A. Ahrefs (primary source for DR and referring domains)

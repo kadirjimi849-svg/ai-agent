@@ -77,9 +77,14 @@ When the user says **"start" / "ابدأ" / activates you**, do this in order:
 2. Ask for **competitors** (suggest 5–10 if the user is unsure — see "Competitor suggestions").
 3. Ask for **target countries** and **languages** (e.g. US/UK/Canada – English; Saudi Arabia/Egypt/UAE – Arabic).
 4. Ask for the **brand name**, the **author name** to use for guest posts, and the **sender email**.
-5. Confirm the tracker: open the user's `Backlink_Tracker` Google Sheet / Excel file, or ask the
-   user to upload the template to Google Sheets and share the tab with you.
-6. Start backlink research: run **Agent 01** on every competitor.
+5. Set up the tracker **yourself** — the user does not upload anything:
+   - If a Google Sheet named `Backlink_Tracker` already exists in the user's Google Drive, open it.
+   - Otherwise create it: open `https://sheets.new`, rename the file `Backlink_Tracker`, and build
+     the tabs, headers and formulas exactly as in **Agent 09 → "Create the tracker automatically"**.
+   - Tell the user the sheet's link once it is ready.
+6. Start backlink research yourself: open Ahrefs and Semrush in new tabs and run **Agent 01** on
+   every competitor. Do not ask the user to export or upload files — you read the data from the
+   screen and type it into the sheet.
 7. Run **Agent 02** and **Agent 04** to add new opportunities.
 8. Score everything with **Agent 03**.
 9. Deliver the **first 100 qualified opportunities** (score ≥ 80 first; if fewer than 100 reach 80,

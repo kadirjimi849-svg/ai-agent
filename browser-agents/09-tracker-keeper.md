@@ -18,10 +18,66 @@ dates in `YYYY-MM-DD`.
 
 ---
 
-## File & tabs
+## Create the tracker automatically
 
-Upload `Backlink_Tracker.xlsx` to Google Drive and open with Google Sheets (File → Save as
-Google Sheets), or open in Excel Online. Tabs:
+You build the tracker yourself in Google Sheets — the user uploads nothing.
+
+1. Search Google Drive for `Backlink_Tracker`. If it exists, open it and skip to "Rules for updating".
+2. Otherwise open `https://sheets.new` and rename the file `Backlink_Tracker`.
+3. Create four tabs (rename "Sheet1" and add the rest with "+"): **Tracker**,
+   **Competitor Backlinks**, **Outreach Log**, **Link Monitoring**.
+4. Type the headers in row 1 of each tab (one per cell, starting at A1), make row 1 bold, and
+   freeze it (View → Freeze → 1 row).
+
+**Tracker** (A→U):
+`Website | URL | DR | Traffic | Country | Language | Niche | Contact Email | Opportunity Type | Article Topic | Status | Published URL | Anchor Text | Date | Notes | Relevance | Content Quality | Spam Risk | Traffic Points | Score | Priority`
+
+**Competitor Backlinks** (A→J):
+`Competitor | Referring Domain | Backlink URL | DR (Ahrefs) | Authority Score (Semrush) | Organic Traffic | Anchor Text | Link Type | Content Category | Date Found`
+
+**Outreach Log** (A→L):
+`Website | Contact Name | Contact Email | Language | Subject | Article Idea | Sent Date | Follow-up Day 3 | Follow-up Day 7 | Follow-up Day 14 | Reply Status | Next Action`
+
+**Link Monitoring** (A→H):
+`Published URL | Website | Check Date | Link Found | Rel | Page Indexed | Anchor Text | Link Status`
+
+5. Type these formulas in row 2, then copy them down to row 500
+   (select the cells in row 2 → Ctrl+C → select the same columns rows 3–500 → Ctrl+V):
+
+Tracker `S2` (Traffic Points):
+```
+=IF(D2="","",IF(D2>=5000000,100,IF(D2>=1000000,95,IF(D2>=500000,85,IF(D2>=100000,70,IF(D2>=50000,60,IF(D2>=10000,45,IF(D2>=1000,25,10))))))))
+```
+Tracker `T2` (Score):
+```
+=IF(OR(C2="",D2="",P2="",Q2="",R2=""),"",ROUND(0.3*C2+0.3*P2+0.2*S2+0.1*Q2+0.1*(100-R2),1))
+```
+Tracker `U2` (Priority):
+```
+=IF(T2="","",IF(T2>=80,"PRIORITY","Low"))
+```
+Outreach Log `H2`, `I2`, `J2`:
+```
+=IF(G2="","",G2+3)
+=IF(G2="","",G2+7)
+=IF(G2="","",G2+14)
+```
+Link Monitoring `H2`:
+```
+=IF(D2="","",IF(D2="No","Lost",IF(E2="Dofollow","Live","Live (nofollow)")))
+```
+
+6. Test once: type a sample row in Tracker (DR 82, Traffic 650000, Relevance 92, Content Quality
+   85, Spam Risk 5) — Score must show **87.2** and Priority **PRIORITY**. Then delete the sample.
+7. Tell the user: "Tracker ready: <sheet link>".
+
+If typing formulas fails, do not stop: calculate Traffic Points, Score and Priority yourself with
+the same rules and type the values.
+
+## Tabs (reference)
+
+`Backlink_Tracker.xlsx` is an optional ready-made version of the same tracker (with a Guide and
+Dashboard tab). Use it only if the user already uploaded it; otherwise use the sheet you built.
 
 | Tab | Purpose |
 |---|---|
