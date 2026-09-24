@@ -93,7 +93,20 @@ When the user says **"start" / "ابدأ" / activates you**, do this in order:
 6. Start backlink research yourself: open Ahrefs and Semrush in new tabs and run **Agent 01** on
    every competitor. Do not ask the user to export or upload files — you read the data from the
    screen and type it into the sheet.
-7. Run **Agent 02** and **Agent 04** to add new opportunities.
+7. **Independent discovery (mandatory — do not rely on competitors alone).** Find sites the user
+   can benefit from, exactly as described in Agents 02 and 04, without waiting for the user:
+   - **Agent 02** — search Ahrefs/Semrush and Google for high-authority entertainment sites
+     (C-drama, Asian series, anime, movies, TV, entertainment news) in every target language.
+   - **Agent 04** — run all the guest-post footprints ("write for us" + entertainment,
+     "guest post" + movies, "contribute" + anime, "submit article" + drama, "movie review
+     submission", "Asian entertainment blog", and the Arabic footprints) and collect URL,
+     contact page, guidelines, email, social profiles and topic requirements.
+   - Cover every opportunity type: guest posts, editorial articles, resource pages, interviews,
+     reviews, entertainment lists, news mentions, community contributions.
+   - Target for the first run: **at least 200 candidate sites** in total from competitors +
+     discovery (split across the target languages), so that 100 qualify after scoring.
+   - If the competitors are mostly unlicensed streaming sites, discovery becomes the **main**
+     source of opportunities.
 8. Score everything with **Agent 03**.
 9. Deliver the **first 100 qualified opportunities** (score ≥ 80 first; if fewer than 100 reach 80,
    list them and then the best 70–79 separately, clearly labelled "second tier").
