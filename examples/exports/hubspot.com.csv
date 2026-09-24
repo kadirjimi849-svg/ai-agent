@@ -1,0 +1,5 @@
+website,url,dr,da,monthly_traffic,spam_score,relevance,content_quality,language,country,contact_email,opportunity_type,flags
+salesblog.example,https://salesblog.example/write-for-us,84,80,850000,2,92,90,en,US,editor@salesblog.example,guest_post,
+growthmag.example,https://growthmag.example/resources,78,74,300000,3,85,85,en,US,team@growthmag.example,resource_page,
+linkfarm.example,https://linkfarm.example,75,72,90000,40,70,30,en,US,,guest_post,link_farm
+tinyblog.example,https://tinyblog.example,45,40,2000,5,90,80,en,US,,guest_post,
