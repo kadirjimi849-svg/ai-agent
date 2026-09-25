@@ -1,0 +1,27 @@
+# اختياري. كل الإعدادات اليومية (المجلد، كل كم ساعة، مدة الفيديو، الحسابات، المفاتيح) تُضبط من لوحة التحكم
+# http://localhost:8080  وتُحفظ في data\bot.sqlite3.  هذا الملف للإعدادات المتقدمة فقط: انسخه إلى config.yaml
+graph_version: v23.0
+
+paths:
+  data: data
+  cache: data/cache
+  clips: data/clips
+
+render:
+  font: ""                    # فارغ = اختيار تلقائي لخط عربي (ويندوز: Arial Bold). أو ضع Cairo-Bold.ttf في مجلد fonts
+  accent: [229, 9, 20]        # لون شريط التقدم والعلامة (أحمر)
+  preset: veryfast            # أبطأ = جودة أفضل: fast / medium
+
+# اختياري: إذا كانت الحلقات على MinIO/S3 بدل مجلد محلي، أو أردت رفع المقاطع لرابط عام
+# minio:
+#   endpoint: https://s3.example.com
+#   access_key_env: MINIO_ACCESS_KEY
+#   secret_key_env: MINIO_SECRET_KEY
+#   clips_bucket: shorts
+
+# الحسابات تُربط من لوحة التحكم. يمكن أيضاً إضافتها هنا بتوكنات من .env (الطريقة القديمة):
+accounts: []
+#  - name: fb_page
+#    platform: facebook
+#    page_id: "PAGE_ID"
+#    token_env: FB_TOKEN_PAGE

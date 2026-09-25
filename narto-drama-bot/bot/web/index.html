@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Narto Drama Autopilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d14;--panel:#131723;--panel2:#1a1f2e;--line:#262c3f;--text:#e8ebf4;--muted:#8a93ab;
+  --accent:#e50914;--accent2:#ff5a5f;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444;
+  --yt:#ff0033;--fb:#1877f2;--ig:#d62976;--tt:#25f4ee;
+  --r:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Cairo,Tahoma,Arial,sans-serif;font-size:15px}
+a{color:#7cb7ff}
+button,input,select,textarea{font-family:inherit;font-size:14px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 60px}
+@media(max-width:700px){header{position:static!important}.count{font-size:38px}}
+header{position:sticky;top:0;z-index:5;background:rgba(11,13,20,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top{max-width:1240px;margin:0 auto;padding:12px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px;display:flex;align-items:center;gap:8px}
+.logo i{display:inline-block;width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#ff8a00);box-shadow:0 0 22px rgba(229,9,20,.45)}
+nav{display:flex;gap:4px;flex-wrap:wrap;margin-inline-start:auto}
+nav a{padding:8px 14px;border-radius:10px;color:var(--muted);text-decoration:none;font-weight:600}
+nav a.on,nav a:hover{background:var(--panel2);color:var(--text)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12.5px;font-weight:700;background:var(--panel2);border:1px solid var(--line)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.dot.busy{background:var(--warn);animation:p 1s infinite}
+@keyframes p{50%{opacity:.3}}
+section{display:none;padding-top:22px}
+section.on{display:block}
+h2{margin:0 0 14px;font-size:20px}
+h3{margin:0 0 10px;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.g3,.g2{grid-template-columns:1fr}}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+.hero .card{position:relative;overflow:hidden}
+.hero .main{background:radial-gradient(900px 300px at 100% 0,rgba(229,9,20,.22),transparent 60%),var(--panel)}
+.count{font-size:46px;font-weight:800;letter-spacing:1px;direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--panel2);color:var(--text);border:1px solid var(--line);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{filter:brightness(1.15)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.pri{background:linear-gradient(135deg,var(--accent),#ff4d4d);border-color:transparent;color:#fff;box-shadow:0 6px 22px rgba(229,9,20,.35)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:6px 10px;font-size:12.5px;border-radius:9px}
+.btn.danger{color:var(--err)}
+.kpi b{display:block;font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:13px}
+.switch{position:relative;display:inline-block;vertical-align:middle;width:52px;height:28px;flex:none}
+.switch input{display:none}
+.switch span{position:absolute;inset:0;background:#39405a;border-radius:99px;cursor:pointer;transition:.2s}
+.switch span:after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+span{background:var(--ok)}
+.switch input:checked+span:after{right:27px}
+.big-switch{display:flex;align-items:center;gap:12px;font-weight:800;font-size:17px}
+.step{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);color:#fcd34d;font-weight:600}
+.error{padding:10px 12px;border-radius:12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.35);color:#fca5a5}
+.notice{padding:10px 12px;border-radius:12px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.35);color:#86efac}
+.shorts{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.short{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.short .th{aspect-ratio:9/16;background:#000;position:relative;cursor:pointer}
+.short .th img,.short .th video{width:100%;height:100%;object-fit:cover;display:block}
+.short .th .play{position:absolute;inset:0;display:grid;place-items:center;font-size:38px;color:#fff;text-shadow:0 2px 10px #000}
+.short .meta{padding:10px;display:flex;flex-direction:column;gap:6px}
+.short .hook{font-weight:700;font-size:13.5px;line-height:1.5}
+.badges{display:flex;gap:4px;flex-wrap:wrap}
+.b{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid var(--line);text-decoration:none;color:var(--text)}
+.b.ok{border-color:rgba(34,197,94,.5);color:#86efac}.b.fail{border-color:rgba(239,68,68,.5);color:#fca5a5}.b.dry{color:var(--muted)}
+.plat{display:flex;align-items:center;gap:10px}
+.ico{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;color:#fff;flex:none}
+.ico.youtube{background:var(--yt)}.ico.facebook{background:var(--fb)}.ico.instagram{background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)}.ico.tiktok{background:#000;border:1px solid #333;color:var(--tt)}
+.acc{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;margin-top:8px;background:var(--panel2)}
+.acc .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+details{margin-top:10px}
+summary{cursor:pointer;color:var(--muted);font-weight:600}
+details ol{padding-inline-start:20px;line-height:1.9;color:#c9cfe0;font-size:13.5px}
+code{background:#0e1220;padding:1px 6px;border-radius:6px;direction:ltr;unicode-bidi:embed;font-size:12.5px}
+input[type=text],input[type=number],input[type=password],select,textarea{width:100%;background:#0e1220;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px}
+textarea{min-height:70px}
+label.f{display:block;font-weight:700;margin-bottom:12px}
+label.f small{display:block;font-weight:400;color:var(--muted);margin-top:4px}
+label.f input,label.f select{margin-top:6px}
+.ltr{direction:ltr;text-align:left}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+th{color:var(--muted);font-weight:600;font-size:13px}
+td select{width:auto;padding:5px 8px}
+.tablewrap{overflow-x:auto}
+pre.log{background:#070910;border:1px solid var(--line);border-radius:12px;padding:12px;height:62vh;overflow:auto;direction:ltr;text-align:left;font-size:12.5px;line-height:1.6;white-space:pre-wrap;margin:0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.modal.on{display:flex}
+.modal .box{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
+.modal video{max-height:78vh;width:auto;max-width:100%;border-radius:12px;display:block;margin:auto}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1f2537;border:1px solid var(--line);padding:10px 18px;border-radius:12px;font-weight:700;display:none;z-index:30}
+.bar{height:8px;background:#0e1220;border-radius:99px;overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#ff8a00);width:0;transition:width 1s linear}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="logo"><i></i> Narto Drama <span class="muted small">الطيار الآلي</span></div>
+    <span class="pill" id="hdrStatus"><span class="dot"></span> …</span>
+    <nav id="nav">
+      <a href="#home" data-t="home">لوحة التحكم</a>
+      <a href="#accounts" data-t="accounts">الحسابات</a>
+      <a href="#library" data-t="library">المسلسلات</a>
+      <a href="#settings" data-t="settings">الإعدادات</a>
+      <a href="#log" data-t="log">السجل</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="flash" style="margin-top:16px"></div>
+
+  <!-- ============ HOME ============ -->
+  <section id="home">
+    <div class="hero">
+      <div class="card main">
+        <div class="row" style="justify-content:space-between">
+          <div class="big-switch">
+            <label class="switch"><input type="checkbox" id="apToggle"><span></span></label>
+            <span id="apLabel">الطيار الآلي متوقف</span>
+          </div>
+          <span class="pill" id="dryPill" style="display:none">⚠️ وضع تجريبي: لا ينشر</span>
+        </div>
+        <p class="muted" style="margin:14px 0 2px">الفيديو التالي بعد</p>
+        <div class="count" id="countdown">--:--:--</div>
+        <div class="bar"><i id="countBar"></i></div>
+        <p class="muted small" id="scheduleTxt" style="margin-top:10px"></p>
+        <div id="stepBox"></div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn pri" id="runNow">⚡ اصنع وانشر الآن</button>
+          <button class="btn" id="makeOnly">🎬 اصنع فقط (بدون نشر)</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>المنصات المرتبطة</h3>
+        <div id="platSummary"></div>
+        <a class="btn sm" href="#accounts" style="margin-top:12px">إدارة الحسابات ←</a>
+      </div>
+    </div>
+
+    <div class="grid g4" style="margin-top:14px">
+      <div class="card kpi"><b id="kSeries">0</b><span>مسلسل في المكتبة</span></div>
+      <div class="card kpi"><b id="kClips">0</b><span>فيديو قصير صُنع</span></div>
+      <div class="card kpi"><b id="kPosts">0</b><span>منشور ناجح</span></div>
+      <div class="card kpi"><b id="kViews">0</b><span>مشاهدة (تُحدّث كل 6 ساعات)</span></div>
+    </div>
+
+    <div class="row" style="justify-content:space-between;margin:26px 0 12px">
+      <h2 style="margin:0">آخر الفيديوهات</h2>
+      <button class="btn sm ghost" onclick="loadClips()">↻ تحديث</button>
+    </div>
+    <div class="shorts" id="shorts"></div>
+  </section>
+
+  <!-- ============ ACCOUNTS ============ -->
+  <section id="accounts">
+    <h2>ربط الحسابات</h2>
+    <p class="muted">كل فيديو جديد يُنشر تلقائياً على كل الحسابات المفعّلة هنا. التوكنات تُحفظ على جهازك فقط.</p>
+    <div class="grid g2" id="platCards"></div>
+  </section>
+
+  <!-- ============ LIBRARY ============ -->
+  <section id="library">
+    <h2>مكتبة المسلسلات</h2>
+    <div class="card">
+      <div class="row">
+        <input type="text" id="libRoot" class="ltr" style="flex:1;min-width:240px" placeholder="D:\narto-drama">
+        <button class="btn pri" id="scanBtn">🔍 فحص المجلد</button>
+      </div>
+      <p class="muted small" style="margin:8px 0 0">كل مجلد داخله = مسلسل، والفيديوهات داخل المجلد = الحلقات. يُعاد الفحص تلقائياً قبل كل فيديو، فأي مسلسل جديد تضيفه يدخل الدورة وحده.</p>
+    </div>
+    <div class="row" style="margin:16px 0 10px;justify-content:space-between">
+      <input type="text" id="libSearch" placeholder="ابحث عن مسلسل…" style="max-width:320px">
+      <span class="muted small" id="libCount"></span>
+    </div>
+    <div class="card tablewrap" style="padding:6px 10px">
+      <table>
+        <thead><tr><th>مفعّل</th><th>المسلسل</th><th>النوع</th><th>الحلقات</th><th>فيديوهات</th><th>مشاهدات</th><th>أولوية</th><th></th></tr></thead>
+        <tbody id="libBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section id="settings">
+    <h2>الإعدادات</h2>
+    <form id="setForm" class="grid g2">
+      <div class="card">
+        <h3>النشر التلقائي</h3>
+        <label class="f">فيديو جديد كل (ساعات)<input type="number" name="interval_hours" min="1" max="72"><small>8 = ثلاث فيديوهات في اليوم</small></label>
+        <label class="f">مدة الفيديو (ثانية)<input type="number" name="clip_seconds" min="15" max="90"><small>تشمل: ومضة الـ hook (2 ث) + المشهد + بطاقة النهاية (3 ث)</small></label>
+        <label class="f">عدد اللحظات من كل حلقة قبل الانتقال للتالية<input type="number" name="clips_per_episode" min="1" max="10"></label>
+        <label class="f">المنطقة الزمنية<input type="text" name="timezone" class="ltr"></label>
+        <label class="f row" style="justify-content:space-between">وضع تجريبي (يصنع الفيديو ولا ينشره)<label class="switch"><input type="checkbox" name="dry_run"><span></span></label></label>
+      </div>
+      <div class="card">
+        <h3>الـ Hook بالذكاء الاصطناعي</h3>
+        <label class="f row" style="justify-content:space-between">كتابة hooks خاصة بكل مسلسل من عنوانه<label class="switch"><input type="checkbox" name="ai_hooks"><span></span></label></label>
+        <label class="f">Anthropic API key<input type="password" name="ANTHROPIC_API_KEY" class="ltr" autocomplete="off"><small>بدون مفتاح يستعمل البوت مكتبة hooks جاهزة حسب نوع المسلسل، ويتعلم أيها يربح</small></label>
+        <label class="f">النموذج<input type="text" name="ai_model" class="ltr"></label>
+        <h3 style="margin-top:18px">موقعك (اختياري)</h3>
+        <label class="f">الدومين الظاهر على الفيديو<input type="text" name="domain" class="ltr" placeholder="example.com"></label>
+        <label class="f">رابط صفحة المسلسل<input type="text" name="drama_url" class="ltr" placeholder="https://example.com/drama/{slug}"></label>
+      </div>
+      <div class="card">
+        <h3>مفاتيح تطبيقات المنصات</h3>
+        <p class="muted small">تحتاجها مرة واحدة لتعمل أزرار الربط. الشرح في صفحة الحسابات.</p>
+        <label class="f">Google OAuth Client ID<input type="text" name="YT_CLIENT_ID" class="ltr"></label>
+        <label class="f">Google OAuth Client Secret<input type="password" name="YT_CLIENT_SECRET" class="ltr" autocomplete="off"></label>
+        <label class="f">Meta App ID<input type="text" name="META_APP_ID" class="ltr"></label>
+        <label class="f">Meta App Secret<input type="password" name="META_APP_SECRET" class="ltr" autocomplete="off"></label>
+      </div>
+      <div class="card">
+        <h3>TikTok</h3>
+        <label class="f">Client Key<input type="text" name="TIKTOK_CLIENT_KEY" class="ltr"></label>
+        <label class="f">Client Secret<input type="password" name="TIKTOK_CLIENT_SECRET" class="ltr" autocomplete="off"></label>
+        <label class="f">Redirect URI (اختياري)<input type="text" name="TIKTOK_REDIRECT" class="ltr" placeholder="http://localhost:8080/oauth/tiktok"><small>اتركه فارغاً لاستعمال رابط هذا الحاسوب</small></label>
+        <div class="row" style="margin-top:18px"><button class="btn pri" type="submit">💾 حفظ الإعدادات</button></div>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ LOG ============ -->
+  <section id="log">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px"><h2 style="margin:0">السجل</h2>
+      <label class="row small muted"><input type="checkbox" id="logFollow" checked> متابعة تلقائية</label></div>
+    <pre class="log" id="logBox"></pre>
+  </section>
+</div>
+
+<div class="modal" id="modal"><div class="box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const PL = {
+  youtube:{name:"يوتيوب شورتس",ico:"▶"}, facebook:{name:"فيسبوك ريلز",ico:"f"},
+  instagram:{name:"إنستغرام ريلز",ico:"◎"}, tiktok:{name:"تيك توك",ico:"♪"}
+};
+const NICHES = {legend:"أسطورة/أكشن",revenge:"انتقام",ceo:"ملياردير/مدير",secret:"هوية سرية",rebirth:"عودة/فرصة ثانية",
+  romance:"رومانسي",family:"عائلي",werewolf:"مستذئب"};
+let S = null, lastLogLen = 0, dramas = [];
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = n => Number(n||0).toLocaleString("en-US");
+function toast(t){const el=$("#toast");el.textContent=t;el.style.display="block";clearTimeout(el._t);el._t=setTimeout(()=>el.style.display="none",3200)}
+async function api(url, opts={}){
+  const r = await fetch(url, {headers:{"Content-Type":"application/json"}, ...opts,
+    body: opts.body && typeof opts.body!=="string" ? JSON.stringify(opts.body) : opts.body});
+  const j = await r.json().catch(()=>({}));
+  if(!r.ok || j.ok===false) throw new Error(j.error || r.statusText);
+  return j;
+}
+function modal(html){$("#modalBox").innerHTML=html;$("#modal").classList.add("on")}
+function closeModal(){$("#modal").classList.remove("on");$("#modalBox").innerHTML=""}
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+
+/* ---------- tabs ---------- */
+function tab(){
+  const t=(location.hash||"#home").slice(1);
+  document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===t));
+  document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.t===t));
+  if(t==="library") loadDramas();
+  if(t==="log") loadLog();
+  if(t==="settings") fillSettings();
+}
+window.addEventListener("hashchange",tab);
+
+/* ---------- state ---------- */
+async function loadState(){
+  S = await api("/api/state");
+  S._skew = S.now - Date.now()/1000;
+  const a = S.autopilot, c = S.counts;
+  $("#apToggle").checked = !!a.enabled;
+  $("#apLabel").textContent = a.enabled ? "الطيار الآلي يعمل" : "الطيار الآلي متوقف";
+  $("#dryPill").style.display = S.settings.dry_run ? "" : "none";
+  const dot = a.busy ? "busy" : (a.enabled ? "on" : "");
+  $("#hdrStatus").innerHTML = `<span class="dot ${dot}"></span> ${a.busy ? "يعمل الآن…" : a.enabled ? "تلقائي كل "+S.settings.interval_hours+" ساعات" : "متوقف"}`;
+  $("#stepBox").innerHTML = (a.busy && a.step ? `<div class="step">⏳ ${esc(a.step)}</div>` : "") +
+    (a.last_error && !a.busy ? `<div class="error" style="margin-top:10px">آخر خطأ: ${esc(a.last_error)}</div>` : "");
+  $("#runNow").disabled = $("#makeOnly").disabled = !!a.busy;
+  $("#kSeries").textContent = fmt(c.series); $("#kClips").textContent = fmt(c.clips);
+  $("#kPosts").textContent = fmt(c.published); $("#kViews").textContent = fmt(c.views);
+  const last = a.last_run ? new Date(a.last_run*1000).toLocaleString("ar") : "لم ينشر بعد";
+  $("#scheduleTxt").textContent = `آخر تشغيل: ${last} • مدة الفيديو ${S.settings.clip_seconds} ثانية • ${c.active} مسلسل مفعّل / ${fmt(c.episodes)} حلقة`;
+  renderPlatSummary(); renderPlatCards();
+  if(S.fb_pending && !$("#modal").classList.contains("on")) showFbPicker();
+}
+function tick(){
+  if(!S) return;
+  const a=S.autopilot, el=$("#countdown"), bar=$("#countBar");
+  if(!a.enabled || !a.next_run){el.textContent="--:--:--";bar.style.width="0";return}
+  const now=Date.now()/1000 + (S._skew||0);
+  let d=Math.max(0,Math.round(a.next_run-now));
+  const h=String(Math.floor(d/3600)).padStart(2,"0"),m=String(Math.floor(d%3600/60)).padStart(2,"0"),s=String(d%60).padStart(2,"0");
+  el.textContent = a.busy ? "جارٍ العمل…" : `${h}:${m}:${s}`;
+  const total=S.settings.interval_hours*3600;
+  bar.style.width = Math.min(100,100*(1-d/total))+"%";
+}
+setInterval(tick,1000);
+
+$("#apToggle").addEventListener("change", async e=>{
+  const on=e.target.checked;
+  if(on && !S.accounts.some(x=>x.enabled) && !confirm("لا يوجد حساب مرتبط بعد. سيصنع البوت الفيديوهات دون نشرها. متابعة؟")){e.target.checked=false;return}
+  await api("/api/autopilot",{method:"POST",body:{enabled:on}});
+  toast(on?"تم تشغيل الطيار الآلي 🚀":"تم الإيقاف"); loadState();
+});
+$("#runNow").onclick = ()=>runNow(null,true);
+$("#makeOnly").onclick = ()=>runNow(null,false);
+async function runNow(slug,publish){
+  try{await api("/api/run",{method:"POST",body:{slug,publish}});toast("بدأ العمل… تابع السجل");setTimeout(loadState,800)}
+  catch(e){toast(e.message)}
+}
+
+/* ---------- shorts ---------- */
+async function loadClips(){
+  const rows = await api("/api/clips?limit=24");
+  $("#shorts").innerHTML = rows.length ? rows.map(c=>`
+    <div class="short">
+      <div class="th" onclick="${c.has_file?`play(${c.id})`:""}">
+        ${c.has_file?`<img src="/media/cover/${c.id}" loading="lazy" onerror="this.remove()"><div class="play">▶</div>`:`<div class="play muted small">حُذف الملف</div>`}
+      </div>
+      <div class="meta">
+        <div class="hook">${esc(c.hook_text)}</div>
+        <div class="muted small">${esc(c.title)} • الحلقة ${c.ep_no}</div>
+        <div class="badges">${c.posts.map(p=>{
+          const cls=p.status==="published"?"ok":p.status==="failed"?"fail":"dry";
+          const t=`${PL[p.platform]?.ico||""} ${p.status==="published"?fmt(p.views)+" 👁":p.status==="failed"?"فشل":"تجريبي"}`;
+          return p.url?`<a class="b ${cls}" href="${esc(p.url)}" target="_blank" title="${esc(p.account)}">${t}</a>`
+                      :`<span class="b ${cls}" title="${esc(p.error||p.account)}">${t}</span>`}).join("")
+          || `<button class="btn sm" onclick="publishClip(${c.id})">انشر الآن</button>`}</div>
+      </div>
+    </div>`).join("") : `<div class="card muted">لا توجد فيديوهات بعد. اضغط «اصنع وانشر الآن» أو شغّل الطيار الآلي.</div>`;
+}
+function play(id){modal(`<video src="/media/video/${id}" controls autoplay playsinline></video>`)}
+async function publishClip(id){await api(`/api/clips/${id}/publish`,{method:"POST"});toast("جارٍ النشر…");setTimeout(loadClips,4000)}
+
+/* ---------- accounts ---------- */
+function renderPlatSummary(){
+  $("#platSummary").innerHTML = Object.keys(PL).map(p=>{
+    const list=S.accounts.filter(a=>a.platform===p&&a.enabled), st=S.platforms[p]||{};
+    return `<div class="plat" style="margin-top:10px"><div class="ico ${p}">${PL[p].ico}</div>
+      <div style="flex:1"><b>${PL[p].name}</b><div class="small muted">${list.length?list.map(a=>esc(a.label||a.name)).join("، "):"غير مرتبط"}</div></div>
+      <span class="small muted">${fmt(st.posts||0)} منشور</span></div>`}).join("");
+}
+const GUIDE = {
+ youtube:`<ol>
+  <li>افتح <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> وأنشئ مشروعاً جديداً.</li>
+  <li>فعّل <b>YouTube Data API v3</b> من «APIs &amp; Services → Library».</li>
+  <li>«OAuth consent screen»: اختر External، أضف بريدك كـ Test user، ثم اضغط <b>Publish app</b> (وإلا ينتهي الربط بعد 7 أيام).</li>
+  <li>«Credentials → Create credentials → OAuth client ID» ونوعه <b>Desktop app</b>.</li>
+  <li>انسخ Client ID و Client Secret إلى صفحة الإعدادات، ثم اضغط «ربط قناة».</li>
+  <li>ملاحظة: قبل تدقيق Google لمشروعك قد تُرفع الفيديوهات كخاصة. اطلب التدقيق من <a href="https://support.google.com/youtube/contact/yt_api_form" target="_blank">هنا</a>.</li></ol>`,
+ facebook:`<ol>
+  <li>من <a href="https://developers.facebook.com/apps" target="_blank">Meta for Developers</a> أنشئ تطبيقاً من نوع <b>Business</b>.</li>
+  <li>أضف منتج <b>Facebook Login for Business</b>، وفي «Valid OAuth Redirect URIs» ضع: <code>${S?.base||""}/oauth/facebook</code></li>
+  <li>من «App settings → Basic» انسخ App ID و App Secret إلى صفحة الإعدادات.</li>
+  <li>اضغط «ربط فيسبوك/إنستغرام» واختر صفحاتك. حساب إنستغرام يجب أن يكون احترافياً ومرتبطاً بالصفحة.</li>
+  <li>بديل: ولّد User Token من <a href="https://developers.facebook.com/tools/explorer" target="_blank">Graph API Explorer</a> بالصلاحيات المطلوبة والصقه في الخانة أدناه.</li></ol>`,
+ tiktok:`<ol>
+  <li>من <a href="https://developers.tiktok.com/apps" target="_blank">TikTok for Developers</a> أنشئ تطبيقاً وأضف <b>Login Kit</b> و <b>Content Posting API</b> (فعّل Direct Post).</li>
+  <li>الصلاحيات: <code>user.info.basic</code> <code>video.publish</code> <code>video.list</code></li>
+  <li>Redirect URI: <code>${S?.base||""}/oauth/tiktok</code> (منصة Desktop). إذا كان التطبيق Web ويطلب https، ضع رابط صفحة من موقعك في الإعدادات، ثم الصق العنوان الذي تصل إليه في الخانة أدناه.</li>
+  <li>انسخ Client Key و Client Secret إلى الإعدادات، ثم اضغط «ربط تيك توك».</li>
+  <li>قبل مراجعة TikTok لتطبيقك تُنشر الفيديوهات «خاصة» فقط. قدّم طلب المراجعة مبكراً.</li></ol>`
+};
+function accRow(a){
+  return `<div class="acc"><div class="ico ${a.platform}">${PL[a.platform].ico}</div>
+    <div class="n">${esc(a.label||a.name)}</div>
+    <label class="switch" title="تفعيل النشر"><input type="checkbox" ${a.enabled?"checked":""} onchange="accToggle('${a.name}',this.checked)" ${a.token_env||a.refresh_token_env?"disabled":""}><span></span></label>
+    <button class="btn sm" onclick="accCheck('${a.name}')">فحص</button>
+    ${a.token_env||a.refresh_token_env?`<span class="small muted">config.yaml</span>`:`<button class="btn sm danger" onclick="accDel('${a.name}')">حذف</button>`}</div>`;
+}
+function renderPlatCards(){
+  const has=k=>S.settings[k];
+  const card=(p,title,btn,need,extra="",guide=p)=>{
+    const list=S.accounts.filter(a=>a.platform===p||(p==="facebook"&&a.platform==="instagram"));
+    const missing=need.filter(k=>!has(k));
+    return `<div class="card"><div class="plat"><div class="ico ${p}">${PL[p].ico}</div><div style="flex:1"><h3 style="margin:0">${title}</h3>
+      <div class="small muted">${list.length} حساب مرتبط</div></div>
+      ${missing.length?`<a class="btn sm" href="#settings">أدخل مفاتيح التطبيق أولاً</a>`:`<a class="btn pri sm" href="/connect/${p}">${btn}</a>`}</div>
+      ${list.map(accRow).join("")}${extra}
+      <details><summary>كيف أحصل على المفاتيح؟</summary>${GUIDE[guide]}</details></div>`;
+  };
+  $("#platCards").innerHTML =
+    card("youtube","يوتيوب شورتس","+ ربط قناة",["YT_CLIENT_ID","YT_CLIENT_SECRET"],
+      manualBox("youtube","أو الصق refresh token (من tools/youtube_auth.py)")) +
+    card("facebook","فيسبوك + إنستغرام","+ ربط فيسبوك/إنستغرام",["META_APP_ID","META_APP_SECRET"],
+      `<details><summary>ربط بـ User Token بدلاً من زر الدخول</summary><div class="row" style="margin-top:8px">
+       <input type="text" id="fbTok" class="ltr" placeholder="EAAG..." style="flex:1"><button class="btn sm" onclick="fbToken()">متابعة</button></div></details>`) +
+    card("tiktok","تيك توك","+ ربط تيك توك",["TIKTOK_CLIENT_KEY","TIKTOK_CLIENT_SECRET"],
+      `<details><summary>لصق عنوان الرجوع (تطبيق Web)</summary><div class="row" style="margin-top:8px">
+       <input type="text" id="ttUrl" class="ltr" placeholder="https://your-site/callback?code=...&state=..." style="flex:1"><button class="btn sm" onclick="ttPaste()">ربط</button></div></details>` +
+      manualBox("tiktok","أو الصق refresh token (من tools/tiktok_auth.py)")) +
+    `<div class="card"><div class="plat"><div class="ico instagram">${PL.instagram.ico}</div><div><h3 style="margin:0">إنستغرام ريلز</h3>
+      <div class="small muted">يُربط عبر زر فيسبوك: اختر حساب إنستغرام المرتبط بصفحتك. الفيديو يُرفع مباشرة من جهازك، لا تحتاج سيرفراً.</div></div></div></div>`;
+}
+function manualBox(p,t){return `<details><summary>${t}</summary><div class="row" style="margin-top:8px">
+  <input type="text" id="man_${p}_l" placeholder="اسم الحساب" style="width:150px"><input type="text" id="man_${p}" class="ltr" placeholder="refresh token" style="flex:1">
+  <button class="btn sm" onclick="manual('${p}')">حفظ</button></div></details>`}
+async function manual(p){try{await api("/api/accounts/manual",{method:"POST",body:{platform:p,refresh_token:$("#man_"+p).value,label:$("#man_"+p+"_l").value}});toast("تم الحفظ");loadState()}catch(e){toast(e.message)}}
+async function accToggle(n,on){await api(`/api/accounts/${n}/toggle`,{method:"POST",body:{enabled:on}});loadState()}
+async function accDel(n){if(!confirm("حذف هذا الحساب؟"))return;await api(`/api/accounts/${n}`,{method:"DELETE"});loadState()}
+async function accCheck(n){toast("جارٍ الفحص…");try{const j=await api(`/api/accounts/${n}/check`,{method:"POST"});toast("✔ "+j.message)}catch(e){toast("✘ "+e.message)}}
+async function fbToken(){try{await api("/api/fb/token",{method:"POST",body:{token:$("#fbTok").value}});showFbPicker()}catch(e){toast(e.message)}}
+async function ttPaste(){try{await api("/api/tiktok/paste",{method:"POST",body:{url:$("#ttUrl").value}});toast("تم ربط تيك توك");loadState()}catch(e){toast(e.message)}}
+async function showFbPicker(){
+  const pages = await api("/api/fb/pending");
+  if(!pages.length){modal(`<h3>لم نجد صفحات</h3><p class="muted">تأكد أنك مسؤول عن صفحة فيسبوك وأنك منحت الصلاحيات.</p><button class="btn" onclick="closeModal()">إغلاق</button>`);return}
+  modal(`<h3>اختر ما تريد النشر عليه</h3>${pages.map(p=>`
+    <div class="acc"><div class="ico facebook">f</div><div class="n">${esc(p.name)}</div><input type="checkbox" class="fbp" value="${p.id}" checked></div>
+    ${p.ig_id?`<div class="acc"><div class="ico instagram">◎</div><div class="n">@${esc(p.ig_username)}</div><input type="checkbox" class="igp" value="${p.id}" checked></div>`:""}`).join("")}
+    <div class="row" style="margin-top:14px"><button class="btn pri" onclick="fbConnect()">ربط المحدد</button><button class="btn ghost" onclick="closeModal()">إلغاء</button></div>`);
+}
+async function fbConnect(){
+  const pages=[...document.querySelectorAll(".fbp:checked")].map(x=>x.value), ig=[...document.querySelectorAll(".igp:checked")].map(x=>x.value);
+  const j=await api("/api/fb/connect",{method:"POST",body:{pages,instagram:ig}});closeModal();toast(`تم ربط ${j.connected} حساب`);loadState();
+}
+
+/* ---------- library ---------- */
+async function loadDramas(){
+  $("#libRoot").value = S?.settings.library_root || "";
+  dramas = await api("/api/dramas"); renderDramas();
+}
+function renderDramas(){
+  const q=$("#libSearch").value.trim(), list=dramas.filter(d=>!q||d.title.includes(q));
+  $("#libCount").textContent=`${list.length} مسلسل`;
+  $("#libBody").innerHTML = list.map(d=>`<tr>
+    <td><label class="switch"><input type="checkbox" ${d.active?"checked":""} onchange="dEdit('${d.slug}',{active:this.checked})"><span></span></label></td>
+    <td><b>${esc(d.title)}</b></td>
+    <td><select onchange="dEdit('${d.slug}',{niche:this.value})">${Object.entries(NICHES).map(([k,v])=>`<option value="${k}" ${k===d.niche?"selected":""}>${v}</option>`).join("")}</select></td>
+    <td>${d.eps}</td><td>${d.clips}</td><td>${fmt(d.views)}</td>
+    <td><select onchange="dEdit('${d.slug}',{priority:this.value})">${[[0.5,"منخفضة"],[1,"عادية"],[1.5,"عالية"],[2.5,"قصوى"]].map(([v,t])=>`<option value="${v}" ${Number(d.priority)===v?"selected":""}>${t}</option>`).join("")}</select></td>
+    <td><button class="btn sm" onclick="runNow('${d.slug}',true)" title="اصنع وانشر من هذا المسلسل الآن">⚡ الآن</button></td></tr>`).join("")
+    || `<tr><td colspan="8" class="muted">لا توجد مسلسلات. أدخل مسار المجلد واضغط «فحص المجلد».</td></tr>`;
+}
+async function dEdit(slug,b){await api(`/api/dramas/${slug}`,{method:"POST",body:b});toast("تم الحفظ")}
+$("#libSearch").oninput=renderDramas;
+$("#scanBtn").onclick=async()=>{
+  $("#scanBtn").disabled=true;
+  try{const j=await api("/api/library/scan",{method:"POST",body:{root:$("#libRoot").value.trim()}});toast(`تم: ${j.series} مسلسل، ${j.episodes} حلقة`);await loadState();loadDramas()}
+  catch(e){toast(e.message)} finally{$("#scanBtn").disabled=false}
+};
+
+/* ---------- settings ---------- */
+function fillSettings(){
+  if(!S) return;
+  const f=$("#setForm");
+  for(const el of f.elements){ if(!el.name) continue;
+    const v=S.settings[el.name]; if(el.type==="checkbox") el.checked=!!v; else el.value=v??""; }
+}
+$("#setForm").onsubmit=async e=>{
+  e.preventDefault(); const b={};
+  for(const el of e.target.elements){ if(!el.name) continue; b[el.name]=el.type==="checkbox"?el.checked:el.value; }
+  try{await api("/api/settings",{method:"POST",body:b});toast("تم حفظ الإعدادات ✔");await loadState();fillSettings()}catch(err){toast(err.message)}
+};
+
+/* ---------- log ---------- */
+async function loadLog(){
+  const lines=await api("/api/logs?n=400"), box=$("#logBox");
+  if(lines.length!==lastLogLen||box.textContent===""){box.textContent=lines.join("\n");lastLogLen=lines.length;if($("#logFollow").checked)box.scrollTop=box.scrollHeight}
+}
+
+/* ---------- boot ---------- */
+(function flash(){
+  const p=new URLSearchParams(location.search);
+  if(p.get("err")) $("#flash").innerHTML=`<div class="error">${esc(p.get("err"))}</div>`;
+  if(p.get("msg")) $("#flash").innerHTML=`<div class="notice">${esc(p.get("msg"))}</div>`;
+  if(p.toString()) history.replaceState(null,"","/"+location.hash);
+})();
+(async()=>{
+  await loadState().catch(e=>toast(e.message)); tab(); loadClips(); tick();
+  let wasBusy=false;
+  setInterval(async()=>{
+    await loadState().catch(()=>{});
+    const busy=S?.autopilot.busy; if(wasBusy&&!busy) loadClips(); wasBusy=busy;
+    if(location.hash==="#log") loadLog();
+  },4000);
+})();
+</script>
+</body>
+</html>

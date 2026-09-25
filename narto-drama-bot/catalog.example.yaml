@@ -1,0 +1,27 @@
+# انسخه إلى catalog.yaml — مسلسل واحد لكل عنصر.
+# niche: revenge | ceo | romance | secret | rebirth | werewolf | family
+# الحلقات تُكتشف تلقائياً من المجلد: ep-001.mp4 أو E01.mp4 أو 12.mp4 ...
+# استعمل:  python -m bot scan videos   لرؤية المجلدات الموجودة في MinIO
+
+dramas:
+  - slug: ceo-secret-wife
+    title: "زوجة المدير السرية"
+    title_en: "The CEO's Secret Wife"
+    niche: ceo
+    priority: 1.0            # 1.5 = أعطه أولوية (مسلسل جديد تريد دفعه)
+    max_episode: 15          # روّج فقط للحلقات المجانية مثلاً
+    synopsis: "فتاة فقيرة توقّع عقد زواج مع مدير تنفيذي بارد..."   # يُستعمل مع الذكاء الاصطناعي
+    hooks:                   # اختياري: hooks خاصة بهذا المسلسل (تُجرَّب أولاً)
+      ar: ["وقّعت عقد الزواج… دون أن تعرف من هو"]
+    source: {type: s3, bucket: videos, prefix: "dramas/ceo-secret-wife/"}
+
+  - slug: revenge-of-the-heiress
+    title: "انتقام الوريثة"
+    niche: revenge
+    source: {type: s3, bucket: videos, prefix: "dramas/revenge-of-the-heiress/"}
+
+  # مصدر محلي (للتجربة)
+  # - slug: test
+  #   title: "تجربة"
+  #   niche: revenge
+  #   source: {type: local, dir: /root/test-episodes}
