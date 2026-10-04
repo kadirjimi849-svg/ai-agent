@@ -1,0 +1,17 @@
+{
+  "domain": "acmecrm.com",
+  "brand_name": "AcmeCRM",
+  "niche": "CRM software",
+  "audience": "Small and mid-size B2B sales teams",
+  "country": "US",
+  "language": "en",
+  "services": ["CRM platform", "sales pipeline automation"],
+  "keywords": ["CRM software", "sales pipeline management", "customer retention"],
+  "competitors": ["hubspot.com", "pipedrive.com"],
+  "backlink_profile": {
+    "referring_domains": 140,
+    "high_authority_domains": 6,
+    "branded_anchor_ratio": 0.45,
+    "dofollow_ratio": 0.62
+  }
+}

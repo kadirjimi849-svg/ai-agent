@@ -1,0 +1,20 @@
+{
+  "salesblog.example": {
+    "contact_name": "Dana",
+    "sender_name": "Sam Lee",
+    "sender_role": "Head of Content",
+    "referenced_article_title": "How to Build a Repeatable Sales Process",
+    "referenced_article_url": "https://salesblog.example/repeatable-sales-process",
+    "content_idea": "A step-by-step framework for auditing a stalled sales pipeline",
+    "value_proposition": "Your readers asked in the comments how to diagnose where deals stall; this answers that with a checklist they can use the same day."
+  },
+  "arabbiz.example": {
+    "contact_name": "أحمد",
+    "sender_name": "سارة",
+    "sender_role": "مديرة المحتوى",
+    "referenced_article_title": "كيف تبني فريق مبيعات ناجحاً",
+    "referenced_article_url": "https://arabbiz.example/sales-team",
+    "content_idea": "دليل عملي لقياس أداء خط المبيعات في الشركات الناشئة",
+    "value_proposition": "يقدّم لقرّائكم أدوات قياس واضحة يمكن تطبيقها فوراً في السوق السعودي."
+  }
+}
